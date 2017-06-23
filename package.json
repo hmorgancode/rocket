@@ -1,0 +1,8 @@
+{
+  "name": "rocket",
+  "version": "0.1.0",
+  "description": "An IoT server for managing plants. Might become broader later on.",
+  "main": "index.js",
+  "repository": "https://github.com/hmorgancode/rocket",
+  "license": "MIT"
+}
