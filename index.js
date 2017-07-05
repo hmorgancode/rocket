@@ -10,9 +10,12 @@ board.on("ready", function() {
   // and explicitly turn power off.
   // (If sensors are left powered, they'll corrode.)
   const leftSidePower = new five.Pin(12);
-  const rightSidePower = new five.Pin(13);
+  const rightSidePower = new five.Pin(11);
   leftSidePower.write(0); // LOW, 0V, the default. Just making it explicit here.
   rightSidePower.write(0);
+
+  // Note: pin 13 appears to output 5V even when you set it to 0.
+  // This may have something to do with that time you short-circuited the board.
 
   // random code from messing around:
 
