@@ -6,18 +6,24 @@ var board = new five.Board({
 
 board.on("ready", function() {
 
+  // Get the pins providing power to the terrarium sensors
+  // and explicitly turn power off.
+  // (If sensors are left powered, they'll corrode.)
+  const leftSidePower = new five.Pin(12);
+  const rightSidePower = new five.Pin(13);
+  leftSidePower.write(0); // LOW, 0V, the default. Just making it explicit here.
+  rightSidePower.write(0);
+
+  // random code from messing around:
+
   // this.pinMode(3, five.Pin.INPUT);
   // this.digitalRead(3, function(value) {
   //   // board.info(value);
   //   console.log(value);
   // });
 
-  // Output 5V via pin 4 to short transistor circuit
-  const powerPin = new five.Pin(13);
-  powerPin.write(1); // HIGH, 5V
-
   // const sensorPin = new five.Pin('A0');
-  this.analogRead(0, (voltage) => console.log(voltage));
+  // this.analogRead(0, (voltage) => console.log(voltage));
   // this.pinMode(4, five.Pin.OUTPUT);
   // powerPin.query((state) => console.log(state));
 
