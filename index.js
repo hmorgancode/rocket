@@ -14,6 +14,8 @@ board.on("ready", function() {
   leftSidePower.write(0); // LOW, 0V, the default. Just making it explicit here.
   rightSidePower.write(0);
 
+  // bleh
+
   // Note: pin 13 appears to output 5V even when you set it to 0.
   // This may have something to do with that time you short-circuited the board.
 
