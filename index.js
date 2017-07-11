@@ -23,7 +23,7 @@ board.on("ready", function() {
 
 
 
-  for (let i = 6; i < 10; ++i) {
+  for (let i = 10; i < 16; ++i) {
     // let i = 4;
     this.analogRead(i, (voltage) => console.log(`pin ${i}: ${voltage}`));
   }
@@ -37,10 +37,11 @@ board.on("ready", function() {
   // pin 5: steady - 80
 
   // Moisture analog pins:
-  // pin 6:
 
   // pin 6: steady
-  // pin 7:
+  // pin 7: steady
+  // pin 8: steady
+  // pin 9: steady
 
   // // Turn sensor power back off
   // leftSidePower.write(0);
