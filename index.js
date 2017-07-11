@@ -23,16 +23,18 @@ board.on("ready", function() {
 
 
 
-  // for (let i = 0; i < 1; ++i) {
-    let i = 3;
+  for (let i = 4; i < 6; ++i) {
+    // let i = 4;
     this.analogRead(i, (voltage) => console.log(`pin ${i}: ${voltage}`));
-  // }
+  }
 
   // pin 0: wacky
   // pin 1: wacky
-  // pin 2: okay
+  // pin 2: steady
+  // pin 3: steady
+  // pin 4:
 
-  // pin 6: okay
+  // pin 6: steady
   // pin 7:
 
   // // Turn sensor power back off
