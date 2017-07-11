@@ -21,9 +21,9 @@ board.on("ready", function() {
   }
 
 
-  // Turn sensor power back off
-  leftSidePower.write(0);
-  rightSidePower.write(0);
+  // // Turn sensor power back off
+  // leftSidePower.write(0);
+  // rightSidePower.write(0);
 
   // Note: pin 13 appears to output 5V even when you set it to 0.
   // This may have something to do with that time you short-circuited the board.
