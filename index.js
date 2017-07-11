@@ -15,6 +15,7 @@ board.on("ready", function() {
   const leftSidePower = new five.Pin(8);
   const rightSidePower = new five.Pin(11);
   if (!enabled) {
+    console.log('enabling power');
     leftSidePower.write(1); // LOW, 0V, the default. Just making it explicit here.
     rightSidePower.write(1);
     enabled = true;
