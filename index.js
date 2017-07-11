@@ -24,12 +24,13 @@ board.on("ready", function() {
 
 
   // for (let i = 0; i < 1; ++i) {
-    let i = 2;
+    let i = 1;
     this.analogRead(i, (voltage) => console.log(`pin ${i}: ${voltage}`));
   // }
 
   // pin 0: wacky
   // pin 1: wacky
+  // pin 2: okay
 
   // pin 6: okay
   // pin 7:
