@@ -11,7 +11,18 @@ board.on("ready", function() {
   // (If sensors are left powered, they'll corrode.)
   const leftSidePower = new five.Pin(8);
   const rightSidePower = new five.Pin(11);
-  leftSidePower.write(0); // LOW, 0V, the default. Just making it explicit here.
+  leftSidePower.write(1); // LOW, 0V, the default. Just making it explicit here.
+  rightSidePower.write(1);
+
+
+
+  for (let i = 0; i < 16; ++i) {
+    this.analogRead(i, (voltage) => console.log(`pin ${i}: ${voltage}`));
+  }
+
+
+  // Turn sensor power back off
+  leftSidePower.write(0);
   rightSidePower.write(0);
 
   // Note: pin 13 appears to output 5V even when you set it to 0.
