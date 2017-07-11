@@ -42,6 +42,16 @@ board.on("ready", function() {
   // pin 7: steady
   // pin 8: steady
   // pin 9: steady
+  // pin 10: steady
+  // pin 11: steady
+  // pin 12: steady
+  // pin 13: steady
+  // pin 14: steady (no sensor but varied within a short range)
+  // pin 15: steady
+  //
+  // Soooo it looks like you may have womped the first two pins with that short circuit
+  // or the sensor is defective? or there's conductive residue on the pins? but that'd still result in a steady voltage
+  // the sensors are definitely bone dry....
 
   // // Turn sensor power back off
   // leftSidePower.write(0);
