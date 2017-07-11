@@ -14,18 +14,18 @@ board.on("ready", function() {
 
   const leftSidePower = new five.Pin(8);
   const rightSidePower = new five.Pin(11);
-  if (!enabled) {
-    console.log('enabling power');
-    leftSidePower.write(1); // LOW, 0V, the default. Just making it explicit here.
-    rightSidePower.write(1);
-    enabled = true;
-  }
+  // if (!enabled) {
+    // console.log('enabling power');
+    leftSidePower.write(0); // LOW, 0V, the default. Just making it explicit here.
+    rightSidePower.write(0);
+    // enabled = true;
+  // }
 
 
 
-  for (let i = 0; i < 16; ++i) {
-    this.analogRead(i, (voltage) => console.log(`pin ${i}: ${voltage}`));
-  }
+  // for (let i = 0; i < 16; ++i) {
+  //   this.analogRead(i, (voltage) => console.log(`pin ${i}: ${voltage}`));
+  // }
 
   // Water level analog pins:
   // pin 0: wacky
