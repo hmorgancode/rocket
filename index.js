@@ -16,7 +16,7 @@ board.on("ready", function() {
 
 
 
-  for (let i = 0; i < 16; ++i) {
+  for (let i = 0; i < 1; ++i) {
     this.analogRead(i, (voltage) => console.log(`pin ${i}: ${voltage}`));
   }
 
