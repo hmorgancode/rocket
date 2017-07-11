@@ -4,15 +4,21 @@ var board = new five.Board({
   // debug: false
 });
 
+let enabled = false;
+
 board.on("ready", function() {
 
   // Get the pins providing power to the terrarium sensors
   // and explicitly turn power off.
   // (If sensors are left powered, they'll corrode.)
+
   const leftSidePower = new five.Pin(8);
   const rightSidePower = new five.Pin(11);
-  leftSidePower.write(1); // LOW, 0V, the default. Just making it explicit here.
-  rightSidePower.write(1);
+  if (!enabled) {
+    leftSidePower.write(1); // LOW, 0V, the default. Just making it explicit here.
+    rightSidePower.write(1);
+    enabled = true;
+  }
 
 
 
