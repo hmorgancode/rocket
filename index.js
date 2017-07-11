@@ -23,16 +23,21 @@ board.on("ready", function() {
 
 
 
-  for (let i = 4; i < 6; ++i) {
+  for (let i = 6; i < 10; ++i) {
     // let i = 4;
     this.analogRead(i, (voltage) => console.log(`pin ${i}: ${voltage}`));
   }
 
+  // Water level analog pins:
   // pin 0: wacky
   // pin 1: wacky
-  // pin 2: steady
-  // pin 3: steady
-  // pin 4:
+  // pin 2: steady - 80
+  // pin 3: steady - 80
+  // pin 4: steady - 80
+  // pin 5: steady - 80
+
+  // Moisture analog pins:
+  // pin 6:
 
   // pin 6: steady
   // pin 7:
