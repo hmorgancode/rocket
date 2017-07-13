@@ -9,11 +9,12 @@ const Plant = new Schema({
   altName: { type: String, trim: true },
   thumbnail: { type: String, required: true, trim: true },
   tags: [{ type: String, trim: true }],
-  instructions: { type: String, trim: true },
-  sensors: { type: [ObjectId], index: true }, // do you want a secondary index here?
-  moistureData: ObjectId,
-  waterLevelData: ObjectId
+  notes: { type: String, trim: true },
+  board: { type: ObjectId, required: true }
+  sensors: { type: [ObjectId], required: true, index: true } // do you want a secondary index here?
 });
+
+module.exports = Plant;
 
 // validators: maxlength? minlength?
 
