@@ -10,11 +10,11 @@ const Plant = new Schema({
   thumbnail: { type: String, required: true, trim: true },
   tags: [{ type: String, trim: true }],
   notes: { type: String, trim: true },
-  board: { type: ObjectId, required: true }
+  board: { type: ObjectId, required: true },
   sensors: { type: [ObjectId], required: true, index: true } // do you want a secondary index here?
 });
 
-module.exports = Plant;
+module.exports = mongoose.model('Plant', Plant);
 
 // validators: maxlength? minlength?
 

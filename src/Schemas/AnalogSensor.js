@@ -5,14 +5,14 @@ const Schema = mongoose.Schema;
 const ObjectId = Schema.Types.ObjectId;
 
 const AnalogSensor = new Schema({
-  sensorType: { type: String, required: true },
+  type: { type: String, required: true },
   board: { type: ObjectId, required: true, index: true },
   dataPin: { type: Number, required: true },
   powerPin: Number,
   data: [{
-          date: { type: Date, required: true },
-          reading: { type: Number, required: true } // between 0 and 1024 as a fraction of input voltage.
+          date: { type: Date, required: true, default: () => new Date() },
+          reading: { type: Number, required: true, min: 0, max: 1024 } // between 0 and 1024 as a fraction of input voltage.
         }]
 });
 
-module.exports = AnalogSensor;
+module.exports = mongoose.model('AnalogSensor', AnalogSensor);
