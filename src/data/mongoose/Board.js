@@ -12,4 +12,4 @@ const Board = new Schema({
   sensors: [ObjectId]
 });
 
-module.exports = mongoose.model('Board', Board);
+export default mongoose.model('Board', Board);

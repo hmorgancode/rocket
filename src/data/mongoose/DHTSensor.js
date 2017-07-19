@@ -16,4 +16,4 @@ const DigitalHumidityTemperatureSensor = new Schema({
         }]
 });
 
-module.exports = mongoose.model('DHTSensor', DigitalHumidityTemperatureSensor);
+export default mongoose.model('DHTSensor', DigitalHumidityTemperatureSensor);

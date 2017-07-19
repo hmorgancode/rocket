@@ -15,4 +15,4 @@ const AnalogSensor = new Schema({
         }]
 });
 
-module.exports = mongoose.model('AnalogSensor', AnalogSensor);
+export default mongoose.model('AnalogSensor', AnalogSensor);

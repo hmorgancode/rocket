@@ -1,28 +1,31 @@
 'use strict';
 
 import koa from 'koa';
+import koaHelmet from 'koa-helmet';
 import koaRouter from 'koa-router';
 import koaBodyParser from 'koa-bodyparser';
-import { graphqlKoa } from 'apollo-server-koa';
+import { graphqlKoa, graphiqlKoa  } from 'apollo-server-koa';
 
-// const helmet = require('koa-helmet');
-// const mongoose = require('mongoose');
-import koaHelmet from 'koa-helmet';
+import schema from './graphql/schema';
 
 const app = new koa();
 const router = new koaRouter();
 const PORT = 3000;
 
 app.use(koaHelmet());
-app.use(koaBodyParser());
 
-router.post()
+// apollo client only uses post. See apollo-client issue #813 for context.
+router.post('/graphql', koaBodyParser(), graphqlKoa({ schema }));
 
-// response
-app.use(ctx => {
-  ctx.body = 'Hello Koa';
+router.get('/graphiql', graphiqlKoa({ endpointURL: '/graphql' }));
+
+router.use('/', async (ctx, next) => {
+  ctx.body = 'You are messing around with koa stuff and should remove this. (404 is koa\'s default response status)';
+  await next();
 });
 
+app.use(router.routes());
+app.use(router.allowedMethods());
 app.listen(PORT);
 
-module.exports = app; // for tests
+export default app; // for tests?

@@ -14,7 +14,7 @@ const Plant = new Schema({
   sensors: { type: [ObjectId], required: true } // do you want a secondary index here?
 });
 
-module.exports = mongoose.model('Plant', Plant);
+export default mongoose.model('Plant', Plant);
 
 // validators: maxlength? minlength?
 
