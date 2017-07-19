@@ -11,7 +11,7 @@ const Plant = new Schema({
   tags: [{ type: String, trim: true }],
   notes: { type: String, trim: true },
   board: { type: ObjectId, required: true },
-  sensors: { type: [ObjectId], required: true, index: true } // do you want a secondary index here?
+  sensors: { type: [ObjectId], required: true } // do you want a secondary index here?
 });
 
 module.exports = mongoose.model('Plant', Plant);

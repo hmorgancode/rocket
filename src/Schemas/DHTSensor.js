@@ -6,7 +6,7 @@ const ObjectId = Schema.Types.ObjectId;
 
 const DigitalHumidityTemperatureSensor = new Schema({
   type: { type: String, default: 'DHT22' },
-  board: { type: ObjectId, required: true, index: true },
+  board: { type: ObjectId, required: true },
   dataPin: { type: Number, required: true },
   powerPin: Number,
   data: [{

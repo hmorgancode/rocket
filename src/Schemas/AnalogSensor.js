@@ -6,7 +6,7 @@ const ObjectId = Schema.Types.ObjectId;
 
 const AnalogSensor = new Schema({
   type: { type: String, required: true },
-  board: { type: ObjectId, required: true, index: true },
+  board: { type: ObjectId, required: true },
   dataPin: { type: Number, required: true },
   powerPin: Number,
   data: [{
