@@ -9,13 +9,21 @@
     "test": "jest"
   },
   "dependencies": {
+    "apollo-server-koa": "^1.0.2",
+    "graphql": "^0.10.5",
+    "graphql-tools": "^1.1.0",
     "johnny-five": "^0.11.1",
     "koa": "^2.3.0",
+    "koa-bodyparser": "^4.2.0",
     "koa-helmet": "^3.2.0",
+    "koa-router": "^7.2.1",
     "mongodb": "^2.2.30",
     "mongoose": "^4.11.1"
   },
   "devDependencies": {
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.24.1",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2",
     "jest": "^20.0.4",
     "supertest": "^3.0.0"
   }
