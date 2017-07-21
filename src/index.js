@@ -6,7 +6,7 @@ import koaRouter from 'koa-router';
 import koaBodyParser from 'koa-bodyparser';
 import { graphqlKoa, graphiqlKoa  } from 'apollo-server-koa';
 
-import schema from './graphql/schema';
+import schema from './data/graphql/schema';
 
 const app = new koa();
 const router = new koaRouter();
