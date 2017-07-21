@@ -5,8 +5,6 @@ const babel = require('gulp-babel');
 
 gulp.task('default', () => {
   return gulp.src('src/**/*.js')
-    .pipe(babel({
-      plugins: ['transform-es2015-modules-commonjs']
-    }))
+    .pipe(babel())
     .pipe(gulp.dest('dist'));
 });
