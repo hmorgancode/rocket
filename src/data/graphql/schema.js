@@ -4,6 +4,9 @@ import { makeExecutableSchema } from 'graphql-tools';
 import resolvers from './resolvers';
 
 const typeDefs = `
+
+  scalar Date # imported from graphql-date, see resolvers
+
   type Query {
     plants: [Plant!]!
     boards: [Board!]!
@@ -58,7 +61,7 @@ const typeDefs = `
 
   type AnalogSensorData implements SensorData {
     date: Date!
-    reading: Number! # 0 to 1024 as a portion of input voltage.
+    reading: Int! # 0 to 1024 as a portion of input voltage.
   }
 
   # Digital Humidity and Temperature Sensor

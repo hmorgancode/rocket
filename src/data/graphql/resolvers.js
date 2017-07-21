@@ -1,14 +1,16 @@
 'use strict';
 
+import GraphQLDate from 'graphql-date';
+
 const resolvers = {
   Query: {
     // obj, {arg1, arg2, ...}, context, info
-    testString(obj, args) {
-      return 'Test string!';
-    },
-    author(obj, args) {
-      return { id: 1, firstName: 'Hello', lastName: 'World' };
-    }
+    // testString(obj, args) {
+    //   return 'Test string!';
+    // },
+    // author(obj, args) {
+    //   return { id: 1, firstName: 'Hello', lastName: 'World' };
+    // }
   },
 
   Sensor: {
@@ -27,7 +29,9 @@ const resolvers = {
       }
       return 'AnalogSensorData';
     }
-  }
+  },
+
+  Date: GraphQLDate
 };
 
 export default resolvers;
