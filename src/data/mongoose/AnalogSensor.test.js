@@ -60,9 +60,7 @@ describe('AnalogSensor', () => {
       }).save();
       expect('this line not to be reached due to validation failure').toBe(true);
     } catch (err) {
-      expect(err.errors.dataPin.name).toBe('ValidatorError');
-      expect(err.errors['data.0.reading'].name).toBe('ValidatorError');
-      expect(err.errors['data.3.reading'].name).toBe('ValidatorError');
+      expect(err.name).toBe('ValidationError');
       expect(err.errors.dataPin.message).toBe('Path `dataPin` (-1) is less than minimum allowed value (0).');
       expect(err.errors['data.0.reading'].message).toBe('Path `reading` (-1) is less than minimum allowed value (0).');
       expect(err.errors['data.3.reading'].message).toBe('Path `reading` (1024) is more than maximum allowed value (1023).');
