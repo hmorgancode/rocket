@@ -3,7 +3,6 @@
 import AnalogSensor from './AnalogSensor';
 import Board from './Board';
 import { wipeTestDatabase, disconnectFromTestDatabase } from '../../test/helpers';
-import Promise from 'bluebird';
 import mongoose from 'mongoose';
 const ObjectId = mongoose.Types.ObjectId;
 

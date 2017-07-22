@@ -1,28 +1,28 @@
 'use strict';
 
-import Board from './Board';
+import Plant from './Plant';
 import { wipeTestDatabase, disconnectFromTestDatabase } from '../../test/helpers';
-import Promise from 'bluebird';
+import mongoose from 'mongoose';
+const ObjectId = mongoose.Types.ObjectId;
 
-describe('Board', () => {
+describe('Plant', () => {
 
   beforeEach(async () => {
     await wipeTestDatabase();
   });
-
   afterAll(async () => await disconnectFromTestDatabase());
 
   test('Creation', async () => {
-    let testBoardModel = new Board({
+    let testPlantModel = new Plant({
       location: 'Hallway'
     });
-    let testBoard = await testBoardModel.save();
+    let testPlant = await testPlantModel.save();
   });
 
   test('Validation', () => {
     // We're reliant on .validate's callback, so, we're sticking with promises here instead of using await.
 
-    // Board should have required fields
+    // Plant should have required fields
     const test1 = new Promise((resolve) => {
 
     });

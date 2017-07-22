@@ -1,40 +1,38 @@
 'use strict';
 
-import Board from './Board';
+import DHTSensor from './DHTSensor';
 import { wipeTestDatabase, disconnectFromTestDatabase } from '../../test/helpers';
-import Promise from 'bluebird';
+import mongoose from 'mongoose';
+const ObjectId = mongoose.Types.ObjectId;
 
-describe('Board', () => {
+describe('DHTSensor', () => {
 
   beforeEach(async () => {
     await wipeTestDatabase();
   });
-
   afterAll(async () => await disconnectFromTestDatabase());
 
   test('Creation', async () => {
-    let testBoardModel = new Board({
-      location: 'Hallway'
-    });
-    let testBoard = await testBoardModel.save();
+    const testId = ObjectId();
+    let testDHTSensor = await new DHTSensor({
+      board: testId,
+      dataPin: 0
+    }).save();
+    expect(testDHTSensor._id).toBeDefined();
+    expect(testDHTSensor.board).toBe(testId);
+    expect(testDHTSensor.dataPin).toBe(0);
+    // default
+    expect(testDHTSensor.type).toBe('DHT22');
+    // Not required, no default
+    expect(testDHTSensor.powerPin).toBeUndefined();
+    // should trim
+    await expect(new DHTSensor({board: testId, dataPin: 0, type: '   DHT22 '}).save()).resolves.toEqual(
+      expect.objectContaining({ type: 'DHT22' })
+    );
   });
 
   test('Validation', () => {
-    // We're reliant on .validate's callback, so, we're sticking with promises here instead of using await.
 
-    // Board should have required fields
-    const test1 = new Promise((resolve) => {
-
-    });
-
-    // @TODO test casting of inputs? check out mongo's behavior more
-
-    // Sensor data should be limited 0-1023 and given dates if not provided one.
-    const test2 = new Promise((resolve) => {
-
-    });
-
-    return Promise.all([test1, test2]);
   });
 
 });
