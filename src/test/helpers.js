@@ -1,14 +1,43 @@
 'use strict';
 
 import mongoose from 'mongoose';
-mongoose.connect('mongodb://localhost/test');
+import Promise from 'bluebird';
 
-const AnalogSensor = require('./Schemas/AnalogSensor');
-const DHTSensor = require('./Schemas/DHTSensor');
-const Plant = require('./Schemas/Plant');
-const Board = require('./Schemas/Board');
+let connection = null;
+const TEST_URI = 'mongodb://localhost/test';
 
-console.log('instantiating Board without required props...');
-var instance = new Board();
-// instance.location = 'Hallway';
-instance.save((err) => err && console.log(err));
+async function connectToTest() {
+    if (connection) {
+      return connection;
+    }
+
+    mongoose.Promise = Promise;
+    const options = {
+      auto_reconnect: true,
+      reconnectTries: Number.MAX_VALUE,
+      reconnectInterval: 1000
+    };
+
+    await mongoose.connect(TEST_URI, options);
+    connection = mongoose.connection;
+    connection.on('error', (e) => console.log(e));
+    // currently: just throw error if initial connection fails
+}
+
+async function wipeDatabase() {
+  for (const i in connection.collections) {
+    await connection.collections[i].remove({});
+  }
+}
+
+export async function wipeTestDatabase() {
+  await connectToTest();
+  await wipeDatabase();
+}
+
+export async function disconnectFromTestDatabase() {
+  if (connection) {
+    await mongoose.disconnect();
+    connection = null;
+  }
+}
