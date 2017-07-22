@@ -13,7 +13,7 @@ describe('Board', () => {
   // Confirm that documents can save with required fields,
   // and that defaults and trim behavior hasn't changed.
   test('Creation', async () => {
-    let testBoard = await new Board({
+    const testBoard = await new Board({
       location: '  Hallway   ',
       thumbnail: '  foo   ',
       type: 'Arduino Mega    '

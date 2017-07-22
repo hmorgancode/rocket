@@ -1,15 +1,15 @@
 'use strict';
 
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 mongoose.Promise = require('bluebird'); // Mongoose contains a deprecated promise library.
                                         // @ME move this somewhere central later?
 const Schema = mongoose.Schema;
 const ObjectId = Schema.Types.ObjectId;
 
 const AnalogSensor = new Schema({
-  type: { type: String, required: true },
+  type: { type: String, required: true, trim: true },
   board: { type: ObjectId, required: true },
-  dataPin: { type: Number, required: true },
+  dataPin: { type: Number, required: true, min: 0 },
   powerPin: Number,
   data: [{
           date: { type: Date, required: true, default: () => new Date() },
