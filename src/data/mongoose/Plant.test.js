@@ -13,28 +13,41 @@ describe('Plant', () => {
   afterAll(async () => await disconnectFromTestDatabase());
 
   test('Creation', async () => {
-    let testPlantModel = new Plant({
-      location: 'Hallway'
-    });
-    let testPlant = await testPlantModel.save();
+    const testId = ObjectId();
+    let testPlant = await new Plant({
+      name: 'foo',
+      board: testId
+    }).save();
+
+    expect(testPlant._id).toBeDefined();
+    expect(testPlant.board).toBe(testId);
+    // not required, no default
+    expect(testPlant.altName).toBeUndefined();
+    expect(testPlant.notes).toBeUndefined();
+    // should be trimmed
+    await expect(new Plant({
+      board: testId,
+      name: ' foo ',
+      thumbnail: ' foo ',
+      altName: ' foo ',
+      tags: [' bar ']
+    }).save()).resolves.toEqual(expect.objectContaining({
+      name: 'foo',
+      thumbnail: 'foo',
+      altName: 'foo',
+      tags: expect.arrayContaining(['bar'])
+    }));
   });
 
-  test('Validation', () => {
-    // We're reliant on .validate's callback, so, we're sticking with promises here instead of using await.
-
-    // Plant should have required fields
-    const test1 = new Promise((resolve) => {
-
-    });
-
-    // @TODO test casting of inputs? check out mongo's behavior more
-
-    // Sensor data should be limited 0-1023 and given dates if not provided one.
-    const test2 = new Promise((resolve) => {
-
-    });
-
-    return Promise.all([test1, test2]);
+  test('Validation', async () => {
+    // required fields
+    try {
+      await new Plant().save();
+      expect('this line not to be reached due to validation failure').toBe(true);
+    } catch (err) {
+      expect(err.name).toBe('ValidationError');
+      expect(err.errors.name.message).toBe('Path `name` is required.');
+      expect(err.errors.board.message).toBe('Path `board` is required.');
+    }
   });
-
 });

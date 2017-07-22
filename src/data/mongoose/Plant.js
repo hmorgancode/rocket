@@ -7,11 +7,11 @@ const ObjectId = Schema.Types.ObjectId;
 const Plant = new Schema({
   name: { type: String, required: true, trim: true },
   altName: { type: String, trim: true },
-  thumbnail: { type: String, required: true, trim: true },
+  thumbnail: { type: String, trim: true },
   tags: [{ type: String, trim: true }],
   notes: { type: String, trim: true },
   board: { type: ObjectId, required: true },
-  sensors: { type: [ObjectId], required: true } // do you want a secondary index here?
+  sensors: [ObjectId]
 });
 
 export default mongoose.model('Plant', Plant);

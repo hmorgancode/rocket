@@ -19,6 +19,7 @@ describe('DHTSensor', () => {
       dataPin: 0,
       data: [{ temperature: 0, humidity: 0 }]
     }).save();
+
     expect(testDHTSensor._id).toBeDefined();
     expect(testDHTSensor.board).toBe(testId);
     expect(testDHTSensor.dataPin).toBe(0);
