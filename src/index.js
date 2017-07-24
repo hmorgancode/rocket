@@ -14,6 +14,8 @@ const PORT = 3000;
 
 app.use(koaHelmet());
 
+// connect to mongoose, set promise to Bluebird
+
 // apollo client only uses post. See apollo-client issue #813 for context.
 router.post('/graphql', koaBodyParser(), graphqlKoa({ schema }));
 

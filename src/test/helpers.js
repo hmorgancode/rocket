@@ -3,6 +3,11 @@
 import mongoose from 'mongoose';
 import Promise from 'bluebird';
 
+import Board from '../data/mongoose/Board';
+import Plant from '../data/mongoose/Plant';
+import AnalogSensor from '../data/mongoose/AnalogSensor';
+import DHTSensor from '../data/mongoose/DHTSensor'
+
 let connection = null;
 const TEST_URI = 'mongodb://localhost/test';
 
@@ -11,6 +16,7 @@ async function connectToTest() {
       return connection;
     }
 
+    // Set mongoose's promises to Bluebird for non-resolver tests
     mongoose.Promise = Promise;
     const options = {
       auto_reconnect: true,
@@ -40,4 +46,10 @@ export async function disconnectFromTestDatabase() {
     await mongoose.disconnect();
     connection = null;
   }
+}
+
+async function setupTestDatabase() {
+  await connectToTest();
+
+
 }

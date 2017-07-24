@@ -15,7 +15,7 @@ const typeDefs = `
   }
 
   type Plant {
-    id: String!
+    _id: String!
     name: String!
     altName: String
     thumbnail: String!
@@ -27,7 +27,7 @@ const typeDefs = `
 
   # Microcontroller - Currently Arduino mega/uno/nano
   type Board {
-    id: String!
+    _id: String!
     location: String!
     type: String
     isRemote: Boolean
@@ -37,7 +37,7 @@ const typeDefs = `
 
   # Analog and Digital sensors plugged into a microcontroller
   interface Sensor {
-    id: String!
+    _id: String!
     type: String!
     board: Board!
     dataPin: Int!
@@ -51,7 +51,7 @@ const typeDefs = `
 
   # Analog Sensor - Currently soil moisture & water level
   type AnalogSensor implements Sensor {
-    id: String!
+    _id: String!
     type: String!
     board: Board!
     dataPin: Int!
@@ -66,7 +66,7 @@ const typeDefs = `
 
   # Digital Humidity and Temperature Sensor
   type DHTSensor implements Sensor {
-    id: String!
+    _id: String!
     type: String!
     board: Board!
     dataPin: Int!

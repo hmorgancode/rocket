@@ -1,8 +1,6 @@
 'use strict';
 
 import mongoose from 'mongoose';
-mongoose.Promise = require('bluebird'); // Mongoose contains a deprecated promise library.
-                                        // @ME move this somewhere central later?
 const Schema = mongoose.Schema;
 const ObjectId = Schema.Types.ObjectId;
 
