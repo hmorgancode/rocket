@@ -12,4 +12,6 @@ const Board = new Schema({
   sensors: [ObjectId]
 });
 
+// runSettersOnQuery ?
+
 export default mongoose.model('Board', Board);

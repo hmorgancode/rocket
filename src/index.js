@@ -21,7 +21,7 @@ router.get('/graphiql', graphiqlKoa({ endpointURL: '/graphql' }));
 
 router.use('/', async (ctx, next) => {
   ctx.body = 'You are messing around with koa stuff and should remove this. (404 is koa\'s default response status)';
-  await next();
+  await next(); // not needed anymore? mess around more w/ koa routes
 });
 
 app.use(router.routes());

@@ -8,6 +8,9 @@
   "scripts": {
     "test": "jest"
   },
+  "jest": {
+    "testPathIgnorePatterns": ["<rootDir>/src/"]
+  },
   "dependencies": {
     "apollo-server-koa": "^1.0.2",
     "bluebird": "^3.5.0",
