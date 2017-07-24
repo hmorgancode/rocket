@@ -63,12 +63,9 @@ describe('Board', () => {
 });
 
 describe('Sensor', () => {
-  test('__resolveType', () => {
-    const __resolveType = resolvers.Sensor.__resolveType;
-    const analogSensor = { type: 'AnalogMoisture' };
-    const DHTSensor = { type: 'DHT22' };
-    expect(__resolveType(analogSensor)).toBe('AnalogSensor');
-    expect(__resolveType(DHTSensor)).toBe('DHTSensor');
+  test('board', async () => {
+    const res = await resolvers.Sensor.board({ board: testBoard._id });
+    expect(res).toEqual(expect.objectContaining({ location: testBoard.location, _id: testBoard._id }));
   });
 });
 

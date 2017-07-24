@@ -9,6 +9,9 @@
     "test": "jest"
   },
   "jest": {
+    "collectCoverage": true,
+    "collectCoverageFrom": ["<rootDir>/**/*.js"],
+    "coverageDirectory": "<rootDir>/coverage/",
     "testPathIgnorePatterns": [
       "<rootDir>/src/"
     ]

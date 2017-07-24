@@ -56,9 +56,9 @@ describe('DHTSensor', () => {
       expect('this line not to be reached due to validation failure').toBe(true);
     } catch (err) {
       expect(err.name).toBe('ValidationError');
-      expect(err.errors['data.0.humidity']).toBe('Path `humidity` is required.');
-      expect(err.errors['data.1.temperature']).toBe('Path `temperature` is required.');
-      expect(err.errors['data.2.humidity']).toBe('Path `humidity` (-10) is less than minimum allowed value (0).');
+      expect(err.errors['data.0.humidity'].message).toBe('Path `humidity` is required.');
+      expect(err.errors['data.1.temperature'].message).toBe('Path `temperature` is required.');
+      expect(err.errors['data.2.humidity'].message).toBe('Path `humidity` (-10) is less than minimum allowed value (0).');
       expect(err.errors['data.3.temperature']).toBeUndefined();
       expect(err.errors['data.3.humidity']).toBeUndefined();
     }

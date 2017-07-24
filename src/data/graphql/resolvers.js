@@ -59,13 +59,9 @@ const resolvers = {
   },
 
   Sensor: {
-    __resolveType(obj, context, info) {
-      if (obj.type.indexOf('DHT') > -1) { // @OPT this using context if it ever becomes an issue
-        return 'DHTSensor';
-      }
-      return 'AnalogSensor';
+    board(obj) {
+      return Board.findById(obj.board);
     },
-
   },
 
   SensorData: {
@@ -75,22 +71,6 @@ const resolvers = {
       }
       return 'AnalogSensorData';
     }
-  },
-
-  AnalogSensor: {
-
-  },
-
-  AnalogSensorData: {
-
-  },
-
-  DHTSensor: {
-
-  },
-
-  DHTSensorData: {
-
   },
 
   // findById?

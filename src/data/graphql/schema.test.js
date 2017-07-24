@@ -11,21 +11,21 @@ test('schema should work', async () => {
   const testMockServer = mockServer(schema);
   const testResult = await testMockServer.query(`{
     plants {
-      id
+      _id
       name
       board {
-        id
+        _id
         location
       }
     }
     boards {
-      id
+      _id
       location
     }
     sensors {
-      id
+      _id
       board {
-        id
+        _id
         location
       }
       dataPin

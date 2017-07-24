@@ -36,7 +36,7 @@ const typeDefs = `
   }
 
   # Analog and Digital sensors plugged into a microcontroller
-  interface Sensor {
+  type Sensor {
     _id: String!
     type: String!
     board: Board!
@@ -49,29 +49,9 @@ const typeDefs = `
     date: Date!
   }
 
-  # Analog Sensor - Currently soil moisture & water level
-  type AnalogSensor implements Sensor {
-    _id: String!
-    type: String!
-    board: Board!
-    dataPin: Int!
-    powerPin: Int
-    data: [AnalogSensorData!]
-  }
-
   type AnalogSensorData implements SensorData {
     date: Date!
     reading: Int! # 0 to 1024 as a portion of input voltage.
-  }
-
-  # Digital Humidity and Temperature Sensor
-  type DHTSensor implements Sensor {
-    _id: String!
-    type: String!
-    board: Board!
-    dataPin: Int!
-    powerPin: Int
-    data: [DHTSensorData!]
   }
 
   type DHTSensorData implements SensorData {
