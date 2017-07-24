@@ -10,7 +10,7 @@
   },
   "jest": {
     "collectCoverage": true,
-    "collectCoverageFrom": ["<rootDir>/**/*.js"],
+    "collectCoverageFrom": ["dist/**/*.js"],
     "coverageDirectory": "<rootDir>/coverage/",
     "testPathIgnorePatterns": [
       "<rootDir>/src/"

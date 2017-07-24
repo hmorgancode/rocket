@@ -47,9 +47,3 @@ export async function disconnectFromTestDatabase() {
     connection = null;
   }
 }
-
-async function setupTestDatabase() {
-  await connectToTest();
-
-
-}
