@@ -14,7 +14,7 @@ gulp.task('babel', async () => {
     .pipe(gulp.dest('dist'));
 });
 
-gulp.task('stream', async () => {
+gulp.task('watch_babel', async () => {
   return watch('src/**/*.js')
     .pipe(plumber())
     .pipe(babel())

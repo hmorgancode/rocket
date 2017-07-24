@@ -1,49 +1,41 @@
+// Helper functions for tests.
+// Currently just handles connecting to, wiping, and disconnecting from
+// the test database using the databaseConnection module.
 'use strict';
 
+import { connectToDatabase, disconnectFromDatabase } from '../modules/databaseConnection';
+// Import mongoose for direct access to the .connection object.
+// (we need it to wipe the test database)
 import mongoose from 'mongoose';
-import Promise from 'bluebird';
 
-import Board from '../data/mongoose/Board';
-import Plant from '../data/mongoose/Plant';
-import AnalogSensor from '../data/mongoose/AnalogSensor';
-import DHTSensor from '../data/mongoose/DHTSensor'
-
+require('dotenv').config();
 let connection = null;
-const TEST_URI = 'mongodb://localhost/test';
+// const TEST_DB_URI = mongodb://localhost/test;
 
-async function connectToTest() {
-    if (connection) {
-      return connection;
-    }
-
-    // Set mongoose's promises to Bluebird for non-resolver tests
-    mongoose.Promise = Promise;
-    const options = {
-      auto_reconnect: true,
-      reconnectTries: Number.MAX_VALUE,
-      reconnectInterval: 1000
-    };
-
-    await mongoose.connect(TEST_URI, options);
-    connection = mongoose.connection;
-    connection.on('error', (e) => console.log(e));
-    // currently: just throw error if initial connection fails
+async function connect() {
+  if (connection) {
+    return;
+  }
+  await connectToDatabase(process.env.TEST_DB_URI);
+  connection = mongoose.connection;
 }
 
-async function wipeDatabase() {
-  for (const i in connection.collections) {
-    await connection.collections[i].remove({});
+async function wipe() {
+  if (connection) {
+    for (const i in connection.collections) {
+      await connection.collections[i].remove({});
+    }
   }
 }
 
 export async function wipeTestDatabase() {
-  await connectToTest();
-  await wipeDatabase();
+  await connect();
+  await wipe();
 }
 
 export async function disconnectFromTestDatabase() {
-  if (connection) {
-    await mongoose.disconnect();
-    connection = null;
-  }
+  await disconnectFromDatabase();
 }
+
+
+

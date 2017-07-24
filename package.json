@@ -10,7 +10,9 @@
   },
   "jest": {
     "collectCoverage": true,
-    "collectCoverageFrom": ["dist/**/*.js"],
+    "collectCoverageFrom": [
+      "dist/**/*.js"
+    ],
     "coverageDirectory": "<rootDir>/coverage/",
     "testPathIgnorePatterns": [
       "<rootDir>/src/"
@@ -19,6 +21,7 @@
   "dependencies": {
     "apollo-server-koa": "^1.0.2",
     "bluebird": "^3.5.0",
+    "dotenv": "^4.0.0",
     "graphql": "^0.10.5",
     "graphql-date": "1.0.3",
     "graphql-tools": "^1.1.0",
