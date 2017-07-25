@@ -40,6 +40,30 @@ describe('Query', () => {
     expect(res).toEqual(expect.arrayContaining([expect.objectContaining({ type: 'testAnalog' }),
       expect.objectContaining({ type: 'testDHT'})]));
   });
+
+  // if given _id, plant, board, and sensor's resolvers should use findById instead of findOne
+  test('plant', async () => {
+    let res = await resolvers.Query.plant(null, { name: 'testPlant' });
+    expect(res).toEqual(expect.objectContaining({ name: 'testPlant', board: testPlant.board }));
+    res = await resolvers.Query.plant(null, { _id: res._id });
+    expect(res).toEqual(expect.objectContaining({ name: 'testPlant', board: testPlant.board }));
+  });
+  test('board', async () => {
+    let res = await resolvers.Query.board(null, { location: 'testRoom' });
+    expect(res).toEqual(expect.objectContaining({ location: 'testRoom' }));
+    res = await resolvers.Query.board(null, { _id: res._id });
+    expect(res).toEqual(expect.objectContaining({ location: 'testRoom' }));
+  });
+  test('sensor', async () => {
+    let res = await resolvers.Query.sensor(null, { type: 'testAnalog', board: testAnalogSensor.board, dataPin: 0 });
+    expect(res).toEqual(expect.objectContaining({ type: 'testAnalog', board: testAnalogSensor.board, dataPin: 0 }));
+    res = await resolvers.Query.sensor(null, { _id: res._id });
+    expect(res).toEqual(expect.objectContaining({ type: 'testAnalog', board: testAnalogSensor.board, dataPin: 0 }));
+    res = await resolvers.Query.sensor(null, { type: 'testDHT', board: testDHTSensor.board, dataPin: 0 });
+    expect(res).toEqual(expect.objectContaining({ type: 'testDHT', board: testDHTSensor.board, dataPin: 0 }));
+    res = await resolvers.Query.sensor(null, { _id: res._id });
+    expect(res).toEqual(expect.objectContaining({ type: 'testDHT', board: testDHTSensor.board, dataPin: 0 }));
+  });
 });
 
 describe('Plant', () => {

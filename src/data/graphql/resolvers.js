@@ -8,35 +8,47 @@ import DHTSensor from '../mongoose/DHTSensor'
 import GraphQLDate from 'graphql-date';
 import Promise from 'bluebird';
 
-// import and use Mongoose models
-// figure out what methods you need to add to your mongoose models from this (if anything)
+// reminder:
+// obj: result returned from the parent field's resolver
+//       (or if top-level, the rootValue from server config)
+// args: arguments passed into query
+// context: state for this request. shared by all resolvers in a query.
+// info: for advanced use, contains info about query's execution state.
+//
+// @TODO: make queries lean
 
 const resolvers = {
   Query: {
-    plants(obj, args, context) {
-      return Plant.find();
+    plants() {
+      return Plant.find(); //@TODO have limits / look up graphql pagination best practice
     },
-    boards(obj, args, context) {
+    boards() {
       return Board.find();
     },
-    sensors(obj, args, context) {
+    sensors() {
       return Promise.all([AnalogSensor.find(), DHTSensor.find()])
         .then((res) => res[0].concat(res[1]));
+    },
+    plant(obj, args) {
+      if (args._id) {
+        return Plant.findById(args._id);
+      }
+      return Plant.findOne({ ...args });
+    },
+    board(obj, args) {
+      if (args._id) {
+        return Board.findById(args._id);
+      }
+      return Board.findOne({ ...args });
+    },
+    sensor(obj, args) {
+      if (args._id) {
+        return Promise.all([AnalogSensor.findById({ ...args }), DHTSensor.findById({ ...args })])
+          .then((res) => res[0] || res[1]);
+      }
+      return Promise.all([AnalogSensor.findOne({ ...args }), DHTSensor.findOne({ ...args })])
+        .then((res) => res[0] || res[1]);
     }
-
-    // obj: result returned from the parent field's resolver
-    //       (or if top-level, the rootValue from server config)
-    // args: arguments passed into query
-    // context: state for this request. shared by all resolvers in a query.
-    // info: for advanced use, contains info about query's execution state.
-
-    // obj, {arg1, arg2, ...}, context, info
-    // testString(obj, args) {
-    //   return 'Test string!';
-    // },
-    // author(obj, args) {
-    //   return { id: 1, firstName: 'Hello', lastName: 'World' };
-    // }
   },
 
   Plant: {

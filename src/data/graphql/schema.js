@@ -8,10 +8,13 @@ const typeDefs = `
   scalar Date # imported from graphql-date, see resolvers
 
   type Query {
-    plants: [Plant!]
-    boards: [Board!]
-    sensors: [Sensor!]
-    #### See what you need.
+    plants: [Plant]
+    boards: [Board]
+    sensors: [Sensor]
+    plant: Plant
+    board: Board
+    sensor: Sensor
+    #### See what else you need.
   }
 
   type Plant {
