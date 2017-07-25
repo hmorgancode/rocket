@@ -20,59 +20,59 @@ import Promise from 'bluebird';
 const resolvers = {
   Query: {
     plants() {
-      return Plant.find(); //@TODO have limits / look up graphql pagination best practice
+      return Plant.find().lean(); //@TODO have limits / look up graphql pagination best practice
     },
     boards() {
-      return Board.find();
+      return Board.find().lean();
     },
     sensors() {
-      return Promise.all([AnalogSensor.find(), DHTSensor.find()])
+      return Promise.all([AnalogSensor.find().lean(), DHTSensor.find().lean()])
         .then((res) => res[0].concat(res[1]));
     },
     plant(obj, args) {
       if (args._id) {
-        return Plant.findById(args._id);
+        return Plant.findById(args._id).lean();
       }
-      return Plant.findOne({ ...args });
+      return Plant.findOne({ ...args }).lean();
     },
     board(obj, args) {
       if (args._id) {
-        return Board.findById(args._id);
+        return Board.findById(args._id).lean();
       }
-      return Board.findOne({ ...args });
+      return Board.findOne({ ...args }).lean();
     },
     sensor(obj, args) {
       if (args._id) {
-        return Promise.all([AnalogSensor.findById({ ...args }), DHTSensor.findById({ ...args })])
+        return Promise.all([AnalogSensor.findById({ ...args }).lean(), DHTSensor.findById({ ...args }).lean()])
           .then((res) => res[0] || res[1]);
       }
-      return Promise.all([AnalogSensor.findOne({ ...args }), DHTSensor.findOne({ ...args })])
+      return Promise.all([AnalogSensor.findOne({ ...args }).lean(), DHTSensor.findOne({ ...args }).lean()])
         .then((res) => res[0] || res[1]);
     }
   },
 
   Plant: {
     board(obj) {
-      return Board.findById(obj.board);
+      return Board.findById(obj.board).lean();
     },
     sensors(obj) {
-      return Promise.all([AnalogSensor.find().where('_id').in(obj.sensors),
-                          DHTSensor.find().where('_id').in(obj.sensors)])
+      return Promise.all([AnalogSensor.find().where('_id').in(obj.sensors).lean(),
+                          DHTSensor.find().where('_id').in(obj.sensors).lean()])
         .then((res) => res[0].concat(res[1]));
     }
   },
 
   Board: {
     sensors(obj) {
-      return Promise.all([AnalogSensor.find().where('_id').in(obj.sensors),
-                          DHTSensor.find().where('_id').in(obj.sensors)])
+      return Promise.all([AnalogSensor.find().where('_id').in(obj.sensors).lean(),
+                          DHTSensor.find().where('_id').in(obj.sensors).lean()])
         .then((res) => res[0].concat(res[1]));
     }
   },
 
   Sensor: {
     board(obj) {
-      return Board.findById(obj.board);
+      return Board.findById(obj.board).lean();
     },
   },
 
