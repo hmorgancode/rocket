@@ -88,8 +88,56 @@ const resolvers = {
   // findById?
 
   // scalars
+  Date: GraphQLDate,
 
-  Date: GraphQLDate
+  // Mutations
+  Mutation: {
+    createPlant(obj, args) {
+      return Plant.create({ ...args });
+    },
+
+    updatePlant(obj, args) {
+      // Find the plant, update it, and return the modified plant (not the original)
+      return Plant.findByIdAndUpdate(args._id, { ...args }, { new: true });
+    },
+
+    deletePlant(obj, args) {
+      // return Plant.findByIdAndRemove(args._id);
+    },
+
+    createBoard(obj, args) {
+      return Board.create({ ...args });
+    },
+
+    updateBoard(obj, args) {
+      // return Board.findByIdAndUpdate(args._id, { ...args }, { new: true });
+    },
+
+    deleteBoard(obj, args) {
+      // return Board.findByIdAndRemove(args._id);
+    },
+
+    createSensor(obj, args) {
+      return Sensor.create({ ...args });
+    },
+
+    updateSensor(obj, args) {
+
+    },
+
+    deleteSensor(obj, args) {
+
+    },
+
+    createSensorData(obj, args) {
+
+    },
+
+    deleteSensorData(obj, args) {
+
+    }
+
+  }
 };
 
 

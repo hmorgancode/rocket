@@ -8,6 +8,8 @@ import Board from '../mongoose/Board';
 import AnalogSensor from '../mongoose/AnalogSensor';
 import DHTSensor from '../mongoose/DHTSensor';
 import Promise from 'bluebird';
+import casual from 'casual';
+casual.seed(123);
 const ObjectId = mongoose.Types.ObjectId;
 
 var testPlant, testBoard, testAnalogSensor, testDHTSensor;
@@ -101,4 +103,38 @@ describe('SensorData', () => {
     expect(__resolveType(analogSensorData)).toBe('AnalogSensorData');
     expect(__resolveType(DHTSensorData)).toBe('DHTSensorData');
   });
+});
+
+describe('Mutation', () => {
+  test('createPlant', async () => {
+    const testPlant = { name: casual.word, thumbnail: casual.url, board: testBoard._id };
+    const res = await resolvers.Mutation.createPlant({}, testPlant);
+    expect(res).toEqual(expect.objectContaining(testPlant));
+    const plants = await Plant.find().lean();
+    expect(plants.length).toBe(2);
+  });
+
+
+
+
+
+
+  test('createBoard', async () => {
+    const testBoard = { location: casual.word };
+    const res = await resolvers.Mutation.createBoard({}, testBoard);
+    expect(res).toEqual(expect.objectContaining(testBoard));
+    const boards = await Board.find().lean();
+    expect(boards.length).toBe(2);
+  });
+
+
+
+  test.skip('createSensor', async () => {
+    const testSensor = { type: casual.word, board: testBoard._id, dataPin: casual.integer };
+    const res = await resolvers.Mutation.createSensor({}, testSensor);
+    expect(res).toEqual(expect.objectContaining(testSensor));
+    const sensors = await Sensor.find().lean();
+    expect(sensors.length).toBe(2);
+  });
+
 });
