@@ -89,11 +89,23 @@ describe('Sensor', () => {
 
 describe('Mutation', () => {
   test('createPlant', async () => {
-    const testPlant = { name: casual.word, thumbnail: casual.url, board: testBoard._id };
-    const res = await resolvers.Mutation.createPlant({}, testPlant);
-    expect(res).toEqual(expect.objectContaining(testPlant));
+    const testPlant2 = { name: casual.word, thumbnail: casual.url, board: testBoard._id };
+    const res = await resolvers.Mutation.createPlant({}, testPlant2);
+    expect(res).toEqual(expect.objectContaining(testPlant2));
     const plants = await Plant.find().lean();
     expect(plants.length).toBe(2);
+  });
+  test('updatePlant', async () => {
+    const res = await resolvers.Mutation.updatePlant({}, { _id: testPlant._id, name: 'updatedTestPlant' });
+    expect(res).toEqual(expect.objectContaining({ _id: testPlant._id, name: 'updatedTestPlant' }));
+    await expect(Plant.find().lean()).resolves.toEqual(expect.arrayContaining([expect.objectContaining(res)]));
+  });
+  test('deletePlant', async () => {
+    const res = await resolvers.Mutation.deletePlant({}, { _id: testPlant._id });
+    expect(res).toEqual(expect.objectContaining({ _id: testPlant._id, name: testPlant.name }));
+    let plants = await Plant.find().lean();
+    expect(Array.isArray(plants)).toBe(true);
+    expect(plants.length).toBe(0);
   });
 
 
@@ -102,21 +114,46 @@ describe('Mutation', () => {
 
 
   test('createBoard', async () => {
-    const testBoard = { location: casual.word };
-    const res = await resolvers.Mutation.createBoard({}, testBoard);
-    expect(res).toEqual(expect.objectContaining(testBoard));
+    const testBoard2 = { location: casual.word };
+    const res = await resolvers.Mutation.createBoard({}, testBoard2);
+    expect(res).toEqual(expect.objectContaining(testBoard2));
     const boards = await Board.find().lean();
     expect(boards.length).toBe(2);
+  });
+  test('updateBoard', async () => {
+    const res = await resolvers.Mutation.updateBoard({}, { _id: testBoard._id, location: 'updatedTestRoom' });
+    expect(res).toEqual(expect.objectContaining({ _id: testBoard._id, location: 'updatedTestRoom' }));
+    await expect(Board.find().lean()).resolves.toEqual(expect.arrayContaining([expect.objectContaining(res)]));
+  });
+  test('deleteBoard', async () => {
+    const res = await resolvers.Mutation.deleteBoard({}, { _id: testBoard._id });
+    expect(res).toEqual(expect.objectContaining({ _id: testBoard._id, location: testBoard.location }));
+    let boards = await Board.find().lean();
+    expect(Array.isArray(boards)).toBe(true);
+    expect(boards.length).toBe(0);
   });
 
 
 
   test('createSensor', async () => {
-    const testSensor = { type: 'Moisture', board: testBoard._id, dataPin: 0 };
-    const res = await resolvers.Mutation.createSensor({}, testSensor);
-    expect(res).toEqual(expect.objectContaining(testSensor));
+    const testSensor2 = { type: 'Moisture', board: testBoard._id, dataPin: 0 };
+    const res = await resolvers.Mutation.createSensor({}, testSensor2);
+    expect(res).toEqual(expect.objectContaining(testSensor2));
     const sensors = await Sensor.find().lean();
     expect(sensors.length).toBe(2);
+  });
+  test('updateSensor', async () => {
+    const res = await resolvers.Mutation.updateSensor({}, { _id: testSensor._id, dataPin: 1 });
+    expect(res).toEqual(expect.objectContaining({ _id: testSensor._id, dataPin: 1 }));
+    await expect(Sensor.find().lean()).resolves.toEqual(expect.arrayContaining([expect.objectContaining(res)]));
+  });
+  test('deleteSensor', async () => {
+    const res = await resolvers.Mutation.deleteSensor({}, { _id: testSensor._id });
+    expect(res).toEqual(expect.objectContaining({ _id: testSensor._id,
+      type: testSensor.type, dataPin: testSensor.dataPin }));
+    let sensors = await Sensor.find().lean();
+    expect(Array.isArray(sensors)).toBe(true);
+    expect(sensors.length).toBe(0);
   });
 
 });

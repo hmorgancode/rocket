@@ -80,12 +80,12 @@ const resolvers = {
     },
 
     updatePlant(obj, args) {
-      // Find the plant, update it, and return the modified plant (not the original)
-      return Plant.findByIdAndUpdate(args._id, { ...args }, { new: true });
+      // {new: true} is to return the modified plant (not the original)
+      return Plant.findByIdAndUpdate(args._id, { ...args }, { new: true }).lean();
     },
 
     deletePlant(obj, args) {
-      // return Plant.findByIdAndRemove(args._id);
+      return Plant.findByIdAndRemove(args._id).lean();
     },
 
     createBoard(obj, args) {
@@ -93,11 +93,11 @@ const resolvers = {
     },
 
     updateBoard(obj, args) {
-      // return Board.findByIdAndUpdate(args._id, { ...args }, { new: true });
+      return Board.findByIdAndUpdate(args._id, { ...args }, { new: true }).lean();
     },
 
     deleteBoard(obj, args) {
-      // return Board.findByIdAndRemove(args._id);
+      return Board.findByIdAndRemove(args._id).lean();
     },
 
     createSensor(obj, args) {
@@ -105,11 +105,11 @@ const resolvers = {
     },
 
     updateSensor(obj, args) {
-
+      return Sensor.findByIdAndUpdate(args._id, { ...args }, { new: true }).lean();
     },
 
     deleteSensor(obj, args) {
-
+      return Sensor.findByIdAndRemove(args._id).lean();
     },
 
     createSensorData(obj, args) {
