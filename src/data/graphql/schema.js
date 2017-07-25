@@ -48,19 +48,17 @@ const typeDefs = `
     data: [SensorData!]
   }
 
-  interface SensorData {
+  type SensorData {
     date: Date!
+    reading: Int # 0 to 1024 as a portion of input voltage
+    temperature: Float # degrees C
+    humidity: Float # percent
   }
 
-  type AnalogSensorData implements SensorData {
-    date: Date!
-    reading: Int! # 0 to 1024 as a portion of input voltage.
-  }
-
-  type DHTSensorData implements SensorData {
-    date: Date!
-    temperature: Float! # degrees C
-    humidity: Float! # percent
+  input SensorInput {
+    reading: Int
+    temperature: Float
+    humidity: Float
   }
 
   type Mutation {
@@ -112,7 +110,7 @@ const typeDefs = `
 
     createSensor (
       type: String!
-      board: Board!
+      board: ID!
       dataPin: Int!
       powerPin: Int
     ): Sensor
@@ -120,7 +118,7 @@ const typeDefs = `
     updateSensor (
       _id: ID!
       type: String
-      board: Board
+      board: ID
       dataPin: Int
       powerPin: Int
     ): Sensor
@@ -129,23 +127,24 @@ const typeDefs = `
       _id: ID!
     ): Sensor
 
-    # context: boards send sensor data but aren't aware of IDs
+    # context: boards send sensor data but aren't aware of IDs.
+    # so, on the server, derive sensor from board location & sensor datapin
     createSensorData (
-      location: String! # board location
-      dataPin: Int! # sensor dataPin
-      data: SensorData!
+      location: String!
+      dataPin: Int!
+      data: SensorInput!
     ): Sensor
 
     deleteSensorData (
       _id: ID!
-      from: Date!
-      to: Date!
-    ): Sensor
+      from: Date
+      to: Date
+    ): [SensorData!]
   }
 
   # since we've added mutations, we need to tell the server which types represent
   # the root query and root mutation types
-  schema:{
+  schema {
     query: Query
     mutation: Mutation
   }

@@ -3,8 +3,7 @@
 import mongoose from 'mongoose';
 import Board from '../mongoose/Board';
 import Plant from '../mongoose/Plant';
-import AnalogSensor from '../mongoose/AnalogSensor';
-import DHTSensor from '../mongoose/DHTSensor'
+import Sensor from '../mongoose/Sensor';
 import GraphQLDate from 'graphql-date';
 import Promise from 'bluebird';
 
@@ -26,8 +25,7 @@ const resolvers = {
       return Board.find().lean();
     },
     sensors() {
-      return Promise.all([AnalogSensor.find().lean(), DHTSensor.find().lean()])
-        .then((res) => res[0].concat(res[1]));
+      return Sensor.find().lean();
     },
     plant(obj, args) {
       if (args._id) {
@@ -43,11 +41,9 @@ const resolvers = {
     },
     sensor(obj, args) {
       if (args._id) {
-        return Promise.all([AnalogSensor.findById({ ...args }).lean(), DHTSensor.findById({ ...args }).lean()])
-          .then((res) => res[0] || res[1]);
+        return Sensor.findById({ ...args }).lean();
       }
-      return Promise.all([AnalogSensor.findOne({ ...args }).lean(), DHTSensor.findOne({ ...args }).lean()])
-        .then((res) => res[0] || res[1]);
+      return Sensor.findOne({ ...args }).lean();
     }
   },
 
@@ -56,17 +52,13 @@ const resolvers = {
       return Board.findById(obj.board).lean();
     },
     sensors(obj) {
-      return Promise.all([AnalogSensor.find().where('_id').in(obj.sensors).lean(),
-                          DHTSensor.find().where('_id').in(obj.sensors).lean()])
-        .then((res) => res[0].concat(res[1]));
+      return Sensor.find().where('_id').in(obj.sensors).lean();
     }
   },
 
   Board: {
     sensors(obj) {
-      return Promise.all([AnalogSensor.find().where('_id').in(obj.sensors).lean(),
-                          DHTSensor.find().where('_id').in(obj.sensors).lean()])
-        .then((res) => res[0].concat(res[1]));
+      return Sensor.find().where('_id').in(obj.sensors).lean();
     }
   },
 
@@ -74,15 +66,6 @@ const resolvers = {
     board(obj) {
       return Board.findById(obj.board).lean();
     },
-  },
-
-  SensorData: {
-    __resolveType(obj, context, info) {
-      if (obj.humidity != null) {
-        return 'DHTSensorData';
-      }
-      return 'AnalogSensorData';
-    }
   },
 
   // findById?

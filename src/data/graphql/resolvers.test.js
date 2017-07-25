@@ -5,20 +5,18 @@ import { wipeTestDatabase, disconnectFromTestDatabase } from '../../test/helpers
 import mongoose from 'mongoose';
 import Plant from '../mongoose/Plant';
 import Board from '../mongoose/Board';
-import AnalogSensor from '../mongoose/AnalogSensor';
-import DHTSensor from '../mongoose/DHTSensor';
+import Sensor from '../mongoose/Sensor';
 import Promise from 'bluebird';
 import casual from 'casual';
 casual.seed(123);
 const ObjectId = mongoose.Types.ObjectId;
 
-var testPlant, testBoard, testAnalogSensor, testDHTSensor;
+var testPlant, testBoard, testSensor;
 beforeEach(async () => {
   await wipeTestDatabase();
   testPlant = await Plant.create({ name: 'testPlant', board: ObjectId() });
   testBoard = await Board.create({ location: 'testRoom' });
-  testAnalogSensor = await AnalogSensor.create({ type: 'testAnalog', board: ObjectId(), dataPin: 0 });
-  testDHTSensor = await DHTSensor.create({ type: 'testDHT', board: ObjectId(), dataPin: 0 });
+  testSensor = await Sensor.create({ type: 'Moisture', board: ObjectId(), dataPin: 0 });
 });
 afterAll(async () => await disconnectFromTestDatabase());
 
@@ -38,12 +36,12 @@ describe('Query', () => {
   test('sensors', async () => {
     const res = await resolvers.Query.sensors();
     expect(Array.isArray(res)).toBe(true);
-    expect(res.length).toBe(2);
-    expect(res).toEqual(expect.arrayContaining([expect.objectContaining({ type: 'testAnalog' }),
-      expect.objectContaining({ type: 'testDHT'})]));
+    expect(res.length).toBe(1);
+    expect(res[0].type).toBe('Moisture');
   });
 
-  // if given _id, plant, board, and sensor's resolvers should use findById instead of findOne
+  // if given _id: plant, board, and sensor's resolvers should use findById
+  // instead of findOne, so test that route as well.
   test('plant', async () => {
     let res = await resolvers.Query.plant(null, { name: 'testPlant' });
     expect(res).toEqual(expect.objectContaining({ name: 'testPlant', board: testPlant.board }));
@@ -57,14 +55,10 @@ describe('Query', () => {
     expect(res).toEqual(expect.objectContaining({ location: 'testRoom' }));
   });
   test('sensor', async () => {
-    let res = await resolvers.Query.sensor(null, { type: 'testAnalog', board: testAnalogSensor.board, dataPin: 0 });
-    expect(res).toEqual(expect.objectContaining({ type: 'testAnalog', board: testAnalogSensor.board, dataPin: 0 }));
+    let res = await resolvers.Query.sensor(null, { type: 'Moisture', board: testSensor.board, dataPin: 0 });
+    expect(res).toEqual(expect.objectContaining({ type: 'Moisture', board: testSensor.board, dataPin: 0 }));
     res = await resolvers.Query.sensor(null, { _id: res._id });
-    expect(res).toEqual(expect.objectContaining({ type: 'testAnalog', board: testAnalogSensor.board, dataPin: 0 }));
-    res = await resolvers.Query.sensor(null, { type: 'testDHT', board: testDHTSensor.board, dataPin: 0 });
-    expect(res).toEqual(expect.objectContaining({ type: 'testDHT', board: testDHTSensor.board, dataPin: 0 }));
-    res = await resolvers.Query.sensor(null, { _id: res._id });
-    expect(res).toEqual(expect.objectContaining({ type: 'testDHT', board: testDHTSensor.board, dataPin: 0 }));
+    expect(res).toEqual(expect.objectContaining({ type: 'Moisture', board: testSensor.board, dataPin: 0 }));
   });
 });
 
@@ -74,17 +68,15 @@ describe('Plant', () => {
     expect(res).toEqual(expect.objectContaining({ location: testBoard.location, _id: testBoard._id }));
   });
   test('sensors', async () => {
-    const res = await resolvers.Plant.sensors({ sensors: [testAnalogSensor._id, testDHTSensor._id]});
-    expect(res).toEqual(expect.arrayContaining([expect.objectContaining({ type: 'testAnalog' }),
-      expect.objectContaining({ type: 'testDHT'})]));
+    const res = await resolvers.Plant.sensors({ sensors: [testSensor._id] });
+    expect(res).toEqual(expect.arrayContaining([expect.objectContaining({ type: 'Moisture' })]));
   });
 });
 
 describe('Board', () => {
   test('sensors', async () => {
-    const res = await resolvers.Board.sensors({ sensors: [testAnalogSensor._id, testDHTSensor._id]});
-    expect(res).toEqual(expect.arrayContaining([expect.objectContaining({ type: 'testAnalog' }),
-      expect.objectContaining({ type: 'testDHT'})]));
+    const res = await resolvers.Board.sensors({ sensors: [testSensor._id] });
+    expect(res).toEqual(expect.arrayContaining([expect.objectContaining({ type: 'Moisture' })]));
   });
 });
 
@@ -92,16 +84,6 @@ describe('Sensor', () => {
   test('board', async () => {
     const res = await resolvers.Sensor.board({ board: testBoard._id });
     expect(res).toEqual(expect.objectContaining({ location: testBoard.location, _id: testBoard._id }));
-  });
-});
-
-describe('SensorData', () => {
-  test('__resolveType', () => {
-    const __resolveType = resolvers.SensorData.__resolveType;
-    const analogSensorData = { reading: 111 };
-    const DHTSensorData = { humidity: 111, temperature: 222 };
-    expect(__resolveType(analogSensorData)).toBe('AnalogSensorData');
-    expect(__resolveType(DHTSensorData)).toBe('DHTSensorData');
   });
 });
 
@@ -129,8 +111,8 @@ describe('Mutation', () => {
 
 
 
-  test.skip('createSensor', async () => {
-    const testSensor = { type: casual.word, board: testBoard._id, dataPin: casual.integer };
+  test('createSensor', async () => {
+    const testSensor = { type: 'Moisture', board: testBoard._id, dataPin: 0 };
     const res = await resolvers.Mutation.createSensor({}, testSensor);
     expect(res).toEqual(expect.objectContaining(testSensor));
     const sensors = await Sensor.find().lean();
