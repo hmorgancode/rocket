@@ -137,9 +137,10 @@ const typeDefs = `
 
     deleteSensorData (
       _id: ID!
-      from: Date
-      to: Date
-    ): [SensorData!]
+      # for now, we only need to wipe all data. Later, add ranges
+      # from: Date
+      # to: Date
+    ): Sensor
   }
 
   # since we've added mutations, we need to tell the server which types represent

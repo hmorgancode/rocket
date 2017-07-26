@@ -57,5 +57,6 @@ describe('Sensor', () => {
     await expect(Sensor.create({ board: ObjectId(), dataPin: 0, type: 'Moisture' })).resolves.toBeDefined();
     await expect(Sensor.create({ board: ObjectId(), dataPin: 0, type: 'Water Level' })).resolves.toBeDefined();
     await expect(Sensor.create({ board: ObjectId(), dataPin: 0, type: 'DHT22' })).resolves.toBeDefined();
+
   });
 });

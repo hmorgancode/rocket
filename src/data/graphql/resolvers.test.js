@@ -9,14 +9,13 @@ import Sensor from '../mongoose/Sensor';
 import Promise from 'bluebird';
 import casual from 'casual';
 casual.seed(123);
-const ObjectId = mongoose.Types.ObjectId;
 
-var testPlant, testBoard, testSensor;
+var testBoard, testSensor, testPlant;
 beforeEach(async () => {
   await wipeTestDatabase();
-  testPlant = await Plant.create({ name: 'testPlant', board: ObjectId() });
   testBoard = await Board.create({ location: 'testRoom' });
-  testSensor = await Sensor.create({ type: 'Moisture', board: ObjectId(), dataPin: 0 });
+  testSensor = await Sensor.create({ type: 'Moisture', board: testBoard._id, dataPin: 0 });
+  testPlant = await Plant.create({ name: 'testPlant', board: testBoard._id, sensors: [testSensor._id] });
 });
 afterAll(async () => await disconnectFromTestDatabase());
 
@@ -108,11 +107,6 @@ describe('Mutation', () => {
     expect(plants.length).toBe(0);
   });
 
-
-
-
-
-
   test('createBoard', async () => {
     const testBoard2 = { location: casual.word };
     const res = await resolvers.Mutation.createBoard({}, testBoard2);
@@ -133,14 +127,14 @@ describe('Mutation', () => {
     expect(boards.length).toBe(0);
   });
 
-
-
   test('createSensor', async () => {
     const testSensor2 = { type: 'Moisture', board: testBoard._id, dataPin: 0 };
     const res = await resolvers.Mutation.createSensor({}, testSensor2);
     expect(res).toEqual(expect.objectContaining(testSensor2));
     const sensors = await Sensor.find().lean();
     expect(sensors.length).toBe(2);
+    // providing the Board should result in the sensor's _id being added to the board's sensors field
+    // create a setter in mongoose?
   });
   test('updateSensor', async () => {
     const res = await resolvers.Mutation.updateSensor({}, { _id: testSensor._id, dataPin: 1 });
@@ -154,6 +148,41 @@ describe('Mutation', () => {
     let sensors = await Sensor.find().lean();
     expect(Array.isArray(sensors)).toBe(true);
     expect(sensors.length).toBe(0);
+  });
+
+  test('createSensorData', async () => {
+    const input = {
+      location: testBoard.location,
+      dataPin: testSensor.dataPin,
+      data: {
+        reading: casual.integer(0, 1023)
+      }
+    };
+    const res = await resolvers.Mutation.createSensorData({}, input);
+    expect(res).toEqual(expect.objectContaining({ _id: testSensor._id }));
+    expect(Array.isArray(res.data) && res.data.length).toBe(1);
+    expect(res.data[0].reading).toBe(input.data.reading);
+    expect(res.data[0].date).toBeDefined();
+  });
+
+  test.only('deleteSensorData', async () => {
+    // Add some data first
+    await resolvers.Mutation.createSensorData({}, {
+      location: testBoard.location,
+      dataPin: testSensor.dataPin,
+      data: {
+        reading: casual.integer(0, 1023)
+      }
+    });
+    let data = (await Sensor.findById({ _id: testSensor._id })).data;
+    expect(Array.isArray(data) && data.length).toBe(1);
+    // Deleting sensor data should return the modified sensor
+    // (@TODO refresh yourself on convention / best practice for returning from updates/deletes)
+    const res = await resolvers.Mutation.deleteSensorData({}, { _id: testSensor._id });
+    expect(res).toEqual(expect.objectContaining({ _id: testSensor._id }));
+    expect(Array.isArray(res.data) && res.data.length).toBe(0);
+    data = (await Sensor.findById({ _id: testSensor._id })).data;
+    expect(Array.isArray(data) && data.length).toBe(0);
   });
 
 });

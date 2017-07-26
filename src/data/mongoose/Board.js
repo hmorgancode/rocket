@@ -10,6 +10,7 @@ const Board = new Schema({
   isRemote: { type: Boolean, default: true }, // for now, only one board is hardwired
   thumbnail: { type: String, trim: true },
   sensors: [ObjectId]
+  // plants ?
 });
 
 // runSettersOnQuery ?

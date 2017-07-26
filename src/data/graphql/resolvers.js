@@ -112,12 +112,17 @@ const resolvers = {
       return Sensor.findByIdAndRemove(args._id).lean();
     },
 
-    createSensorData(obj, args) {
-
+    async createSensorData(obj, args) {
+      const board = await Board.findOne({ location: args.location }).lean();
+      const sensor = await Sensor.findOne({ board: board._id, dataPin: args.dataPin });
+      sensor.data.push(args.data);
+      return sensor.save();
     },
 
-    deleteSensorData(obj, args) {
-
+    async deleteSensorData(obj, args) {
+      const sensor = await Sensor.findById(args._id);
+      sensor.data = [];
+      return sensor.save();
     }
 
   }
