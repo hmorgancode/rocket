@@ -10,7 +10,7 @@ import schema from './data/graphql/schema';
 import { connectToDatabase } from './modules/databaseConnection';
 
 require('dotenv').config();
-connectToDatabase(process.env.TEST_DB_URI);
+connectToDatabase(process.env.PROD_DB_URI);
 
 const app = new koa();
 const router = new koaRouter();
