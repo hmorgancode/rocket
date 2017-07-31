@@ -21,7 +21,7 @@ const typeDefs = `
     _id: ID!
     name: String!
     altName: String
-    thumbnail: String!
+    thumbnail: String
     tags: [String!]
     notes: String
     board: Board!
@@ -64,8 +64,8 @@ const typeDefs = `
   type Mutation {
     createPlant (
       name: String!
-      thumbnail: String!
       board: ID!
+      thumbnail: String
       altName: String
       tags: [String!]
       notes: String
