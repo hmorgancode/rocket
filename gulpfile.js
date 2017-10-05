@@ -47,7 +47,7 @@ gulp.task('watch_babel', async () => {
 // but for now just do this stuff in gulp.
 // or use gulp build tools, nodemon, etc...
 gulp.task('build_groot', async () => {
-  await promisify(git.updateSubmodule)({ args: '--init' });
+  // await promisify(git.updateSubmodule)({ args: '--init' });
   // return run('cd groot && yarn install && yarn build').exec();
   // run(...).exec() is supposed to return a stream, but isn't?
   // and yarn is adding node_modules/gulp-run as a symlink, but it can't be followed?

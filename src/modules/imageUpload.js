@@ -29,7 +29,7 @@ const parseAndSave = multer({
 
 export default function imageUpload() {
   async function respondWithFilename(ctx, next) {
-    ctx.response.body = ctx.req.file.filename;
+    ctx.response.body = `uploads/${ctx.req.file.filename}`;
     await next();
   };
 
